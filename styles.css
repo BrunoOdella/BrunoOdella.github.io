@@ -58,6 +58,7 @@ p {
     justify-content: center;
     gap: 20px;
     margin-top: 20px;
+    flex-wrap: wrap; /* Permitir que los elementos se envuelvan en pantallas pequeñas */
 }
 .contact-info a {
     color: #0078d7;
@@ -100,4 +101,32 @@ button img.mode-icon {
 }
 .night-mode button img.mode-icon {
     filter: invert(100%);
+}
+
+/* Media Queries para dispositivos móviles */
+@media (max-width: 600px) {
+    .container {
+        width: 90%; /* Ajusta el ancho de la contenedor */
+        padding: 10px; /* Reduce el relleno */
+    }
+    h1 {
+        font-size: 1.8em; /* Reduce el tamaño de la fuente */
+    }
+    h2 {
+        font-size: 1.2em; /* Reduce el tamaño de la fuente */
+    }
+    p {
+        font-size: 1em; /* Reduce el tamaño de la fuente */
+    }
+    .contact-info {
+        gap: 10px; /* Reduce el espacio entre los elementos */
+    }
+    .profile-pic {
+        width: 100px; /* Reduce el tamaño de la imagen de perfil */
+        height: 100px; /* Reduce el tamaño de la imagen de perfil */
+    }
+    button img.mode-icon {
+        width: 24px; /* Reduce el tamaño del icono del botón */
+        height: 24px; /* Reduce el tamaño del icono del botón */
+    }
 }
