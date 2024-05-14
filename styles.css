@@ -103,30 +103,30 @@ button img.mode-icon {
     filter: invert(100%);
 }
 
-/* Media Queries para dispositivos móviles */
+
 @media (max-width: 600px) {
     .container {
-        width: 90%; /* Ajusta el ancho de la contenedor */
-        padding: 10px; /* Reduce el relleno */
+        width: 90%; 
+        padding: 10px; 
     }
     h1 {
-        font-size: 1.8em; /* Reduce el tamaño de la fuente */
+        font-size: 1.8em;
     }
     h2 {
-        font-size: 1.2em; /* Reduce el tamaño de la fuente */
+        font-size: 1.2em;
     }
     p {
-        font-size: 1em; /* Reduce el tamaño de la fuente */
+        font-size: 1em;
     }
     .contact-info {
-        gap: 10px; /* Reduce el espacio entre los elementos */
+        gap: 10px; 
     }
     .profile-pic {
-        width: 100px; /* Reduce el tamaño de la imagen de perfil */
-        height: 100px; /* Reduce el tamaño de la imagen de perfil */
+        width: 100px; 
+        height: 100px; 
     }
     button img.mode-icon {
-        width: 24px; /* Reduce el tamaño del icono del botón */
-        height: 24px; /* Reduce el tamaño del icono del botón */
+        width: 24px; 
+        height: 24px;
     }
 }
