@@ -103,11 +103,11 @@ button img.mode-icon {
     filter: invert(100%);
 }
 
-
+/* Media Queries para dispositivos móviles */
 @media (max-width: 600px) {
     .container {
-        width: 90%; 
-        padding: 10px; 
+        width: 90%;
+        padding: 10px;
     }
     h1 {
         font-size: 1.8em;
@@ -119,14 +119,36 @@ button img.mode-icon {
         font-size: 1em;
     }
     .contact-info {
-        gap: 10px; 
+        gap: 10px;
     }
     .profile-pic {
-        width: 100px; 
-        height: 100px; 
+        width: 100px;
+        height: 100px;
     }
     button img.mode-icon {
-        width: 24px; 
+        width: 24px;
         height: 24px;
+    }
+}
+
+/* Modo oscuro predeterminado si el usuario prefiere el esquema de color oscuro */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #282c34;
+        color: #61dafb;
+    }
+    .container {
+        background-color: #20232a;
+        border-color: #61dafb;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    h1, h2, p, .contact-info a {
+        color: #61dafb;
+    }
+    .profile-pic {
+        border-color: #61dafb;
+    }
+    button img.mode-icon {
+        filter: invert(100%);
     }
 }

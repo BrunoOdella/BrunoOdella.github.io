@@ -9,6 +9,21 @@ function toggleMode() {
 
     if (isNightMode) {
         modeButton.innerHTML = '<img src="https://img.icons8.com/ios-glyphs/30/0078d7/sun.png" alt="Modo Día" class="mode-icon">';
+    } else {
+        modeButton.innerHTML = '<img src="https://img.icons8.com/ios-glyphs/30/0078d7/moon.png" alt="Modo Noche" class="mode-icon">';
+    }
+
+    applyMode(isNightMode);
+}
+
+function applyMode(isNightMode) {
+    const body = document.body;
+    const container = document.querySelector('.container');
+    const links = document.querySelectorAll('.contact-info a');
+    const headings = document.querySelectorAll('h1, h2');
+    const paragraphs = document.querySelectorAll('p');
+
+    if (isNightMode) {
         body.style.backgroundColor = '#282c34';
         body.style.color = '#61dafb';
         container.style.backgroundColor = '#20232a';
@@ -24,7 +39,6 @@ function toggleMode() {
             paragraph.style.color = '#61dafb';
         });
     } else {
-        modeButton.innerHTML = '<img src="https://img.icons8.com/ios-glyphs/30/0078d7/moon.png" alt="Modo Noche" class="mode-icon">';
         body.style.backgroundColor = '#f0f0f0';
         body.style.color = '#333';
         container.style.backgroundColor = '#ffffff';
@@ -41,3 +55,15 @@ function toggleMode() {
         });
     }
 }
+
+// Verificar el esquema de color preferido al cargar la página
+window.addEventListener('DOMContentLoaded', (event) => {
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (prefersDarkScheme) {
+        document.body.classList.add('night-mode');
+        document.getElementById('mode-button').innerHTML = '<img src="https://img.icons8.com/ios-glyphs/30/0078d7/sun.png" alt="Modo Día" class="mode-icon">';
+        applyMode(true);
+    } else {
+        applyMode(false);
+    }
+});
