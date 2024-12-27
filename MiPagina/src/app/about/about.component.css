@@ -1,0 +1,36 @@
+.about {
+  margin: 2rem auto;
+  padding: 1rem;
+  text-align: center;
+  background-color: #fdf6e3;
+  border: 1px solid #eee8d5;
+  border-radius: 8px;
+  max-width: 800px;
+}
+
+.profile {
+  text-align: center;
+}
+
+.profile img {
+  display: block;
+  margin: 0 auto;
+  max-width: 150px;
+  border-radius: 50%;
+  border: 3px solid #93a1a1;
+}
+
+.profile h1 {
+  font-size: 2.5rem;
+  color: #002B36;
+}
+
+.profile h2 {
+  font-size: 1.5rem;
+  color: #586e75;
+}
+
+.profile p {
+  font-size: 1.1rem;
+  color: #657b83;
+}

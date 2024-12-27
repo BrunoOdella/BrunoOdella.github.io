@@ -1,0 +1,33 @@
+.contact {
+  padding: 1rem;
+  text-align: center;
+  background-color: #002B36;
+  color: #93a1a1;
+  margin-top: 2rem;
+}
+
+.contact h3 {
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.contact ul {
+  list-style: none;
+  padding: 0;
+}
+
+.contact li {
+  margin: 1rem 0;
+  font-size: 1.1rem;
+}
+
+.contact a {
+  color: #268bd2;
+  text-decoration: none;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.contact a:hover {
+  text-decoration: underline;
+  color: #2aa198;
+}
