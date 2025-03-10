@@ -35,5 +35,10 @@ export class ProjectsComponent {
       description: 'Proyecto sobre inteligencia artificial aplicado a problemas complejos.',
       link: 'https://github.com/BrunoOdella/IA',
     },
+    {
+      title: 'Proyecto Freelance para Inmobiliaria Alsur',
+      description: 'Interfaz Visual(Angular), API(.NET) y base de datos para inmobiliaria alsur.',
+      link: 'https://alsur.uy/inicio',
+    },
   ];
 }
