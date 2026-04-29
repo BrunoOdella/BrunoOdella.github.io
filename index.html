@@ -1891,6 +1891,18 @@ document.documentElement.classList.add("js");
     let currentDrawn = -1;
     let targetIdx = 0;
 
+    function resizeCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.max(1, Math.floor(window.innerWidth * dpr));
+      const h = Math.max(1, Math.floor(window.innerHeight * dpr));
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+        currentDrawn = -1;
+      }
+    }
+    resizeCanvas();
+
     function tryDraw() {
       // Find the loaded frame closest to targetIdx and paint it.
       const target = targetIdx;
@@ -1912,7 +1924,14 @@ document.documentElement.classList.add("js");
         }
       }
       if (pick === -1 || pick === currentDrawn) return;
-      ctx.drawImage(images[pick], 0, 0, canvas.width, canvas.height);
+      const img = images[pick];
+      const cw = canvas.width, ch = canvas.height;
+      const iw = img.naturalWidth, ih = img.naturalHeight;
+      const scale = Math.max(cw / iw, ch / ih);
+      const dw = iw * scale, dh = ih * scale;
+      const dx = (cw - dw) / 2, dy = (ch - dh) / 2;
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.drawImage(img, dx, dy, dw, dh);
       currentDrawn = pick;
     }
 
@@ -1938,6 +1957,7 @@ document.documentElement.classList.add("js");
     let scheduled = false;
     function update() {
       scheduled = false;
+      resizeCanvas();
       const p = computeProgress();
       targetIdx = Math.round(p * (FRAME_COUNT - 1));
       tryDraw();
