@@ -1601,20 +1601,34 @@ document.documentElement.classList.add("js");
   ].filter(x => x.el);
   parallaxEls.forEach(p => p.el.classList.add("parallax"));
 
-  let lastScroll = 0, paraRaf = 0;
+  function recomputeParallaxBaselines() {
+    parallaxEls.forEach(p => { p.el.style.transform = ''; });
+    parallaxEls.forEach(p => {
+      const r = p.el.getBoundingClientRect();
+      p.baseDocTop = r.top + window.scrollY;
+      p.height = r.height;
+    });
+  }
+
+  let paraRaf = 0;
   function applyParallax() {
     paraRaf = 0;
-    parallaxEls.forEach(({ el, speed }) => {
-      const r = el.getBoundingClientRect();
-      const center = r.top + r.height / 2;
-      const offset = (center - window.innerHeight / 2) * speed * -1;
+    const viewportCenterDoc = window.scrollY + window.innerHeight / 2;
+    parallaxEls.forEach(({ el, speed, baseDocTop, height }) => {
+      const elCenterDoc = baseDocTop + height / 2;
+      const offset = (elCenterDoc - viewportCenterDoc) * speed * -1;
       el.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0)`;
     });
   }
   if (!reduced && parallaxEls.length) {
+    recomputeParallaxBaselines();
     window.addEventListener("scroll", () => {
       if (!paraRaf) paraRaf = requestAnimationFrame(applyParallax);
     }, { passive: true });
+    window.addEventListener("resize", () => {
+      recomputeParallaxBaselines();
+      if (!paraRaf) paraRaf = requestAnimationFrame(applyParallax);
+    });
     applyParallax();
   }
 
@@ -1903,36 +1917,53 @@ document.documentElement.classList.add("js");
     }
     resizeCanvas();
 
-    function tryDraw() {
-      // Find the loaded frame closest to targetIdx and paint it.
-      const target = targetIdx;
-      let pick = -1;
-      const aimed = images[target];
-      if (aimed && aimed.complete && aimed.naturalWidth > 0) {
-        pick = target;
-      } else {
-        for (let r = 1; r < FRAME_COUNT; r++) {
-          const a = target - r, b = target + r;
-          if (a >= 0) {
-            const ia = images[a];
-            if (ia && ia.complete && ia.naturalWidth > 0) { pick = a; break; }
-          }
-          if (b < FRAME_COUNT) {
-            const ib = images[b];
-            if (ib && ib.complete && ib.naturalWidth > 0) { pick = b; break; }
-          }
+    function nearestLoaded(idx) {
+      const aimed = images[idx];
+      if (aimed && aimed.complete && aimed.naturalWidth > 0) return aimed;
+      for (let r = 1; r < FRAME_COUNT; r++) {
+        const a = idx - r, b = idx + r;
+        if (a >= 0) {
+          const ia = images[a];
+          if (ia && ia.complete && ia.naturalWidth > 0) return ia;
+        }
+        if (b < FRAME_COUNT) {
+          const ib = images[b];
+          if (ib && ib.complete && ib.naturalWidth > 0) return ib;
         }
       }
-      if (pick === -1 || pick === currentDrawn) return;
-      const img = images[pick];
+      return null;
+    }
+
+    function tryDraw() {
+      const target = targetIdx;
+      if (Math.abs(target - currentDrawn) < 0.005) return;
+      const low = Math.max(0, Math.min(FRAME_COUNT - 1, Math.floor(target)));
+      const high = Math.max(0, Math.min(FRAME_COUNT - 1, Math.ceil(target)));
+      const blend = target - low;
+
+      const imgLow = nearestLoaded(low);
+      if (!imgLow) return;
+
       const cw = canvas.width, ch = canvas.height;
-      const iw = img.naturalWidth, ih = img.naturalHeight;
+      const iw = imgLow.naturalWidth, ih = imgLow.naturalHeight;
+      if (!iw || !ih) return;
       const scale = Math.max(cw / iw, ch / ih);
       const dw = iw * scale, dh = ih * scale;
       const dx = (cw - dw) / 2, dy = (ch - dh) / 2;
+
       ctx.clearRect(0, 0, cw, ch);
-      ctx.drawImage(img, dx, dy, dw, dh);
-      currentDrawn = pick;
+      ctx.globalAlpha = 1;
+      ctx.drawImage(imgLow, dx, dy, dw, dh);
+
+      if (high !== low && blend > 0) {
+        const imgHigh = nearestLoaded(high);
+        if (imgHigh && imgHigh !== imgLow) {
+          ctx.globalAlpha = blend;
+          ctx.drawImage(imgHigh, dx, dy, dw, dh);
+          ctx.globalAlpha = 1;
+        }
+      }
+      currentDrawn = target;
     }
 
     function preload() {
@@ -1959,7 +1990,7 @@ document.documentElement.classList.add("js");
       scheduled = false;
       resizeCanvas();
       const p = computeProgress();
-      targetIdx = Math.round(p * (FRAME_COUNT - 1));
+      targetIdx = p * (FRAME_COUNT - 1);
       tryDraw();
     }
     function schedule() {
