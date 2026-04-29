@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bruno Odella — Ingeniero en Sistemas</title>
+<meta name="description" content="Bruno Odella, estudiante avanzado de Ingeniería en Sistemas en la Universidad ORT Uruguay. Desarrollador con foco en .NET, Angular, arquitectura y sistemas concurrentes. Buscando primer empleo formal." />
+
+<!-- Open Graph -->
+<meta property="og:title" content="Bruno Odella — Ingeniero en Sistemas" />
+<meta property="og:description" content="Estudiante avanzado en ORT Uruguay. .NET, Angular, arquitectura, concurrencia. Disponible para primer empleo formal." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="es_UY" />
+<meta property="og:image" content="assets/bruno.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23f4ede0'/><text x='50%25' y='62%25' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-size='22' fill='%23c2643a'>b</text></svg>" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  /* ---------- TOKENS ---------- */
+  :root {
+    --bg: oklch(0.955 0.018 80);
+    --bg-2: oklch(0.925 0.022 80);
+    --ink: oklch(0.20 0.012 60);
+    --ink-2: oklch(0.40 0.012 60);
+    --ink-3: oklch(0.55 0.012 60);
+    --line: oklch(0.84 0.018 78);
+    --accent: oklch(0.58 0.135 38);
+    --accent-soft: oklch(0.92 0.04 38);
+    --available: oklch(0.62 0.13 145);
+
+    --serif: "Instrument Serif", "Times New Roman", Georgia, serif;
+    --sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    --maxw: 1280px;
+    --gutter: clamp(20px, 4vw, 56px);
+    --r: 2px;
+  }
+
+  [data-theme="dark"] {
+    --bg: oklch(0.16 0.008 60);
+    --bg-2: oklch(0.20 0.010 60);
+    --ink: oklch(0.94 0.006 75);
+    --ink-2: oklch(0.74 0.008 75);
+    --ink-3: oklch(0.55 0.010 75);
+    --line: oklch(0.28 0.010 60);
+    --accent: oklch(0.72 0.15 42);
+    --accent-soft: oklch(0.30 0.06 42);
+    --available: oklch(0.78 0.16 145);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *::selection { background: var(--accent); color: var(--bg); }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  body {
+    font-family: var(--sans);
+    background: transparent;
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.55;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    transition: color 0.4s ease;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- SCROLL PROGRESS ---------- */
+  .progress {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 1px; z-index: 100; pointer-events: none;
+    background: transparent;
+  }
+  .progress::before {
+    content: "";
+    display: block; height: 100%;
+    width: var(--p, 0%);
+    background: var(--accent);
+    transition: width 0.05s linear;
+  }
+
+  /* ---------- NAV ---------- */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 50;
+    padding: 22px var(--gutter);
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: color-mix(in oklab, var(--bg) 75%, transparent);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .nav.scrolled { border-bottom-color: var(--line); }
+
+  .nav__brand {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-style: italic;
+    letter-spacing: -0.01em;
+  }
+  .nav__brand span { font-style: normal; color: var(--accent); }
+
+  .nav__right { display: flex; align-items: center; gap: 8px; }
+  .nav__links { display: none; gap: 28px; align-items: center; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-2); margin-right: 20px; }
+  .nav__links a { position: relative; padding: 4px 0; transition: color 0.2s ease; }
+  .nav__links a:hover { color: var(--ink); }
+  .nav__links a::after {
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: -2px;
+    height: 1px; background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s cubic-bezier(0.5, 0, 0, 1);
+  }
+  .nav__links a:hover::after { transform: scaleX(1); }
+  @media (min-width: 720px) { .nav__links { display: flex; } }
+
+  .pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink-2);
+    border-radius: 999px;
+    padding: 7px 12px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  }
+  .pill:hover { border-color: var(--ink); color: var(--ink); }
+  .pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .toggle-track {
+    width: 44px; height: 24px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--bg-2);
+    position: relative; cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+  .toggle-track:hover { border-color: var(--ink); }
+  .toggle-track::after {
+    content: ""; position: absolute;
+    top: 2px; left: 2px;
+    width: 18px; height: 18px;
+    background: var(--ink);
+    border-radius: 999px;
+    transition: transform 0.3s cubic-bezier(0.5, 0, 0, 1);
+  }
+  [data-theme="dark"] .toggle-track::after { transform: translateX(20px); background: var(--accent); }
+
+  /* ---------- LAYOUT ---------- */
+  main { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
+
+  section {
+    padding: 120px 0;
+    border-top: 1px solid var(--line);
+    position: relative;
+  }
+  section:first-of-type { border-top: none; padding-top: 0; }
+  @media (max-width: 720px) {
+    section { padding: 80px 0; }
+  }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 56px;
+  }
+  @media (min-width: 900px) {
+    .section-head { grid-template-columns: 200px 1fr; gap: 32px; align-items: baseline; }
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1;
+    letter-spacing: -0.015em;
+  }
+  .section-title em { font-style: italic; color: var(--ink-2); }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    padding-top: 140px;
+    padding-bottom: 40px;
+    border-top: none;
+  }
+  @media (max-width: 720px) {
+    .hero { padding-top: 110px; padding-bottom: 32px; }
+  }
+
+  .hero__meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 60px;
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-2);
+  }
+  @media (min-width: 720px) {
+    .hero__meta { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  }
+  .hero__meta-item span { display: block; color: var(--ink-3); margin-bottom: 6px; font-size: 10px; }
+
+  .hero__name {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(64px, 14vw, 200px);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+    margin-bottom: 32px;
+  }
+  .hero__name .row { display: block; }
+  .hero__name em { font-style: italic; color: var(--ink-2); display: inline-block; }
+  .hero__name .accent { color: var(--accent); }
+
+  .hero__lede {
+    max-width: 540px;
+    font-size: clamp(18px, 2.4vw, 24px);
+    line-height: 1.45;
+    color: var(--ink-2);
+    margin-left: auto;
+    text-align: right;
+    text-wrap: pretty;
+  }
+  .hero__lede strong { color: var(--ink); font-weight: 500; }
+  @media (max-width: 720px) {
+    .hero__lede { text-align: left; margin-left: 0; }
+  }
+
+  .available {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    padding: 8px 14px 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg-2);
+    margin-top: 24px;
+  }
+  .available::before {
+    content: "";
+    width: 8px; height: 8px;
+    background: var(--available);
+    border-radius: 999px;
+    box-shadow: 0 0 0 0 var(--available);
+    animation: pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--available) 50%, transparent); }
+    70% { box-shadow: 0 0 0 8px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  .hero__bottom {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    align-items: end;
+    padding-top: 48px;
+    border-top: 1px solid var(--line);
+  }
+  @media (min-width: 900px) {
+    .hero__bottom { grid-template-columns: 1fr 1fr; }
+  }
+
+  .scroll-hint {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .scroll-hint .line {
+    display: inline-block; width: 32px; height: 1px; background: currentColor;
+    position: relative; overflow: hidden;
+  }
+  .scroll-hint .line::after {
+    content: ""; position: absolute; inset: 0;
+    background: var(--accent);
+    transform: translateX(-100%);
+    animation: slide 2.4s cubic-bezier(0.5, 0, 0, 1) infinite;
+  }
+  @keyframes slide {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(0); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .about { grid-template-columns: 240px 1fr; gap: 80px; }
+  }
+  .about__photo {
+    width: 200px; height: 240px;
+    background: var(--bg-2);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+  .about__photo img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    filter: grayscale(1) contrast(1.05);
+    transition: filter 0.6s ease, transform 0.6s ease;
+  }
+  .about__photo:hover img { filter: grayscale(0) contrast(1); transform: scale(1.03); }
+  .about__photo::after {
+    content: attr(data-caption);
+    position: absolute; bottom: 8px; left: 8px;
+    font-family: var(--mono); font-size: 9px; color: var(--bg);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    background: rgba(0,0,0,0.4); padding: 3px 6px; border-radius: 2px;
+    backdrop-filter: blur(4px);
+  }
+
+  .about__text {
+    max-width: 620px;
+  }
+  .about__text p {
+    font-family: var(--serif);
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+    margin-bottom: 28px;
+    text-wrap: pretty;
+  }
+  .about__text p em { font-style: italic; color: var(--accent); }
+  .about__text p:last-child {
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  /* ---------- STACK ---------- */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    overflow: hidden;
+  }
+  @media (min-width: 720px) { .stack-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1000px) { .stack-grid { grid-template-columns: repeat(4, 1fr); } }
+
+  .stack-cell {
+    background: var(--bg);
+    padding: 28px 24px;
+    display: flex; flex-direction: column; gap: 10px;
+    transition: background 0.25s ease;
+    min-height: 140px;
+    justify-content: space-between;
+  }
+  .stack-cell:hover { background: var(--bg-2); }
+  .stack-cell .label {
+    font-family: var(--serif);
+    font-size: 26px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .stack-cell .label em { font-style: italic; color: var(--ink-2); }
+  .stack-cell .meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .stack-cell .num { color: var(--accent); }
+
+  /* ---------- PROJECTS ---------- */
+  .projects {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--line);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 900px) {
+    .projects { grid-template-columns: repeat(2, 1fr); }
+    .project--featured { grid-column: 1 / -1; }
+  }
+
+  .project {
+    background: var(--bg);
+    padding: 36px 32px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    position: relative;
+    transition: background 0.3s ease;
+    cursor: pointer;
+  }
+  .project:hover { background: var(--bg-2); }
+  .project:focus-within { background: var(--bg-2); }
+
+  @media (min-width: 900px) {
+    .project { padding: 48px 40px; gap: 28px; min-height: 320px; }
+    .project--featured {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: stretch;
+      min-height: 380px;
+    }
+  }
+
+  .project__head {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .project__top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 16px;
+  }
+  .project__index {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    letter-spacing: 0.1em;
+  }
+  .project__badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 4px 8px;
+    border-radius: 2px;
+    border: 1px solid var(--line);
+    color: var(--ink-2);
+  }
+  .project__badge--live {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  [data-theme="dark"] .project__badge--live { color: var(--accent); background: transparent; }
+
+  .project__title {
+    font-family: var(--serif);
+    font-size: clamp(28px, 4.5vw, 52px);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+  .project__title em { font-style: italic; }
+  .project--featured .project__title { font-size: clamp(36px, 6vw, 72px); }
+
+  .project__desc {
+    color: var(--ink-2);
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 56ch;
+    text-wrap: pretty;
+  }
+
+  .project__tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .project__tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-2);
+    padding: 5px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .project:hover .project__tag { border-color: color-mix(in oklab, var(--ink) 25%, var(--line)); }
+
+  .project__foot {
+    display: flex; justify-content: space-between; align-items: end;
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 16px;
+  }
+  .project__links { display: flex; gap: 16px; flex-wrap: wrap; }
+  .project__link {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--ink);
+    transition: color 0.2s ease, border-color 0.2s ease, gap 0.25s ease;
+  }
+  .project__link:hover { color: var(--accent); border-color: var(--accent); gap: 12px; }
+  .project__link .arrow { transition: transform 0.25s ease; }
+  .project__link:hover .arrow { transform: translate(2px, -2px); }
+
+  /* ---------- VISUAL FOR FEATURED PROJECT ---------- */
+  .project__visual {
+    background: var(--bg-2);
+    border-radius: var(--r);
+    position: relative;
+    overflow: hidden;
+    min-height: 220px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line);
+  }
+  .project__visual::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 14px,
+      color-mix(in oklab, var(--ink) 6%, transparent) 14px,
+      color-mix(in oklab, var(--ink) 6%, transparent) 15px
+    );
+    opacity: 0.7;
+  }
+  .project__visual-content {
+    position: relative;
+    text-align: center;
+    padding: 20px;
+  }
+  .project__visual-domain {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 12px;
+  }
+  .project__visual-headline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(24px, 3vw, 36px);
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .project__visual-headline span { display: block; font-style: normal; color: var(--accent); font-size: 0.7em; margin-top: 8px; }
+
+  /* ---------- CONTACT ---------- */
+  .contact {
+    border-top: 1px solid var(--line);
+    padding: 140px 0 80px;
+  }
+  .contact-head {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(56px, 12vw, 168px);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    margin-bottom: 60px;
+  }
+  .contact-head em { font-style: italic; color: var(--ink-2); }
+  .contact-head .accent { color: var(--accent); font-style: italic; }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    overflow: hidden;
+    margin-bottom: 80px;
+  }
+  @media (min-width: 720px) {
+    .contact-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .contact-card {
+    background: var(--bg);
+    padding: 32px 28px;
+    display: flex; flex-direction: column; gap: 8px;
+    transition: background 0.25s ease;
+  }
+  .contact-card:hover { background: var(--bg-2); }
+  .contact-card .channel {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+  }
+  .contact-card .value {
+    font-family: var(--serif);
+    font-size: clamp(20px, 2.4vw, 28px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    word-break: break-word;
+  }
+  .contact-card .value:hover { color: var(--accent); }
+  .contact-card .meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: auto;
+    padding-top: 16px;
+    display: flex; justify-content: space-between;
+  }
+
+  footer {
+    display: flex; flex-direction: column; gap: 24px;
+    padding-top: 48px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+  }
+  @media (min-width: 720px) {
+    footer { flex-direction: row; justify-content: space-between; align-items: center; }
+  }
+  footer a:hover { color: var(--accent); }
+
+  /* ---------- TERMINAL ---------- */
+  .terminal-section {
+    padding: 100px 0;
+    border-top: 1px solid var(--line);
+  }
+  .terminal {
+    background: oklch(0.14 0.012 60);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -30px color-mix(in oklab, var(--ink) 30%, transparent);
+    max-width: 980px;
+    margin: 0 auto;
+    font-family: var(--mono);
+    font-size: 18px;
+    line-height: 1.65;
+  }
+  @media (max-width: 600px) {
+    .terminal { font-size: 14px; }
+  }
+  [data-theme="dark"] .terminal {
+    background: oklch(0.10 0.010 60);
+  }
+  .terminal__bar {
+    background: oklch(0.20 0.010 60);
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid oklch(0.28 0.010 60);
+  }
+  .terminal__dot {
+    width: 11px; height: 11px; border-radius: 999px;
+    background: oklch(0.45 0.010 60);
+  }
+  .terminal__dot:nth-child(1) { background: oklch(0.62 0.16 25); }
+  .terminal__dot:nth-child(2) { background: oklch(0.78 0.14 85); }
+  .terminal__dot:nth-child(3) { background: oklch(0.65 0.16 145); }
+  .terminal__title {
+    margin-left: 12px;
+    font-size: 11px;
+    color: oklch(0.62 0.010 60);
+    text-transform: lowercase;
+    letter-spacing: 0.04em;
+  }
+  .terminal__body {
+    padding: 28px 26px 30px;
+    color: oklch(0.92 0.006 75);
+    min-height: 320px;
+  }
+  .term-line { display: block; min-height: 1.65em; white-space: pre-wrap; word-break: break-word; }
+  .term-prompt {
+    color: oklch(0.62 0.135 38);
+    margin-right: 8px;
+    user-select: none;
+  }
+  .term-prompt::before { content: "▸ "; color: oklch(0.55 0.010 60); }
+  .term-out { color: oklch(0.78 0.008 75); }
+  .term-key { color: oklch(0.78 0.14 85); }
+  .term-str { color: oklch(0.72 0.13 145); }
+  .term-comment { color: oklch(0.50 0.010 60); font-style: italic; }
+  .caret {
+    display: inline-block;
+    width: 0.55em; height: 1.05em;
+    background: oklch(0.62 0.135 38);
+    vertical-align: -2px;
+    margin-left: 2px;
+    animation: blink 1.05s steps(2) infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* ---------- HERO CARET ---------- */
+  .name-caret {
+    display: inline-block;
+    width: 0.06em; height: 0.85em;
+    background: var(--accent);
+    margin-left: 0.06em;
+    vertical-align: -0.05em;
+    animation: blink 1.05s steps(2) infinite;
+  }
+
+  /* ---------- TYPED MASK (per-line clip reveal) ---------- */
+  .mask-line {
+    display: block;
+    overflow: hidden;
+  }
+  .mask-line > span {
+    display: inline-block;
+    transform: translateY(110%);
+    transition: transform 1s cubic-bezier(0.2, 0.7, 0.1, 1);
+  }
+  .reveal.in .mask-line > span,
+  .mask-line.in > span { transform: translateY(0); }
+  .mask-line:nth-child(2) > span { transition-delay: 0.08s; }
+  .mask-line:nth-child(3) > span { transition-delay: 0.16s; }
+
+  /* ---------- PARALLAX ---------- */
+  .parallax { will-change: transform; }
+
+  /* ---------- NOISE OVERLAY ---------- */
+  .noise {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 90;
+    opacity: 0.035;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.2 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+  [data-theme="dark"] .noise { opacity: 0.06; mix-blend-mode: screen; }
+
+  /* ---------- MARQUEE ---------- */
+  .marquee {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+    padding: 18px 0;
+    margin: 60px 0 0;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%);
+  }
+  .marquee__track {
+    display: flex; gap: 56px;
+    white-space: nowrap;
+    animation: marquee 38s linear infinite;
+    width: max-content;
+  }
+  .marquee:hover .marquee__track { animation-play-state: paused; }
+  .marquee__item {
+    font-family: var(--serif);
+    font-size: clamp(28px, 4vw, 48px);
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    display: inline-flex; align-items: center; gap: 56px;
+  }
+  .marquee__item em { font-style: italic; color: var(--ink-2); }
+  .marquee__item::after {
+    content: "✦";
+    color: var(--accent);
+    font-size: 0.7em;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ---------- STATS ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    overflow: hidden;
+    margin-top: 56px;
+  }
+  @media (min-width: 720px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+  .stat {
+    background: var(--bg);
+    padding: 32px 24px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .stat__num {
+    font-family: var(--serif);
+    font-size: clamp(48px, 7vw, 80px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+  .stat__num em { font-style: italic; color: var(--accent); }
+  .stat__label {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+    margin-top: 8px;
+  }
+
+  /* ---------- LIVE TIME ---------- */
+  .live-time {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .live-time__dot {
+    width: 6px; height: 6px;
+    border-radius: 999px;
+    background: var(--accent);
+    animation: blink 1.6s steps(2) infinite;
+  }
+
+  /* ---------- PROJECT TAG (cursor follower) ---------- */
+  .cursor-tag {
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 1001;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 8px 14px;
+    border-radius: 999px;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translate(calc(-50% + 16px), calc(-50% + 16px)) scale(0.9);
+    transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.5, 0, 0, 1);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .cursor-tag.show {
+    opacity: 1;
+    transform: translate(calc(-50% + 16px), calc(-50% + 16px)) scale(1);
+  }
+  .cursor-tag::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 999px;
+    animation: blink 1.2s steps(2) infinite;
+  }
+  @media (hover: none), (pointer: coarse) {
+    .cursor-tag { display: none; }
+  }
+
+  /* ---------- VIEW CURSOR (deprecated, kept hidden) ---------- */
+  .cursor-view { display: none !important; }
+  .__cv_old {
+    position: fixed;
+    top: 0; left: 0;
+    width: 88px; height: 88px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--bg);
+    pointer-events: none;
+    z-index: 1001;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.35s cubic-bezier(0.5, 0, 0, 1.2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+  .cursor-view.show { transform: translate(-50%, -50%) scale(1); }
+  .cursor-view::before {
+    content: "VIEW →";
+    animation: cursor-rotate 8s linear infinite;
+    display: inline-block;
+  }
+  @keyframes cursor-rotate {
+    from { transform: rotate(0); }
+    to { transform: rotate(360deg); }
+  }
+  @media (hover: none), (pointer: coarse) {
+    .cursor-view { display: none; }
+  }
+
+  /* ---------- CUSTOM CURSOR (desktop only, pointer-fine) ---------- */
+  .cursor-dot {
+    position: fixed;
+    top: 0; left: 0;
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 999px;
+    pointer-events: none;
+    z-index: 1000;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s cubic-bezier(0.5, 0, 0, 1), height 0.2s cubic-bezier(0.5, 0, 0, 1), opacity 0.2s ease;
+    mix-blend-mode: difference;
+    opacity: 0;
+  }
+  .cursor-dot.visible { opacity: 1; }
+  .cursor-dot.hover { width: 36px; height: 36px; background: var(--bg); }
+  @media (hover: none), (pointer: coarse) {
+    .cursor-dot { display: none; }
+  }
+
+  /* ---------- REVEAL ANIMATION ---------- */
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.9s cubic-bezier(0.2, 0, 0, 1), transform 0.9s cubic-bezier(0.2, 0, 0, 1);
+  }
+  .js .reveal.in { opacity: 1; transform: none; }
+
+  .js .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.7s cubic-bezier(0.2, 0, 0, 1), transform 0.7s cubic-bezier(0.2, 0, 0, 1);
+  }
+  .js .reveal-stagger.in > * { opacity: 1; transform: none; }
+  .reveal-stagger.in > *:nth-child(1) { transition-delay: 0.05s; }
+  .reveal-stagger.in > *:nth-child(2) { transition-delay: 0.12s; }
+  .reveal-stagger.in > *:nth-child(3) { transition-delay: 0.19s; }
+  .reveal-stagger.in > *:nth-child(4) { transition-delay: 0.26s; }
+  .reveal-stagger.in > *:nth-child(5) { transition-delay: 0.33s; }
+  .reveal-stagger.in > *:nth-child(6) { transition-delay: 0.40s; }
+  .reveal-stagger.in > *:nth-child(7) { transition-delay: 0.47s; }
+  .reveal-stagger.in > *:nth-child(8) { transition-delay: 0.54s; }
+
+  /* ---------- A11Y / FOCUS ---------- */
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .skip-link {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--ink); color: var(--bg);
+    padding: 12px 16px;
+    font-family: var(--mono); font-size: 12px;
+    z-index: 200;
+  }
+  .skip-link:focus { left: 12px; top: 12px; }
+
+  /* ---------- NETREEL BACKGROUND (full-page scroll-driven video) ---------- */
+  html { background: var(--bg); transition: background 0.4s ease; }
+  .netreel-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: var(--bg);
+    overflow: hidden;
+  }
+  .netreel-bg__media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .netreel-bg__tint {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(120% 80% at 50% 45%,
+        color-mix(in oklab, var(--bg) 62%, transparent) 0%,
+        color-mix(in oklab, var(--bg) 88%, transparent) 100%);
+  }
+  [data-theme="dark"] .netreel-bg__tint {
+    background:
+      radial-gradient(120% 80% at 50% 45%,
+        color-mix(in oklab, var(--bg) 45%, transparent) 0%,
+        color-mix(in oklab, var(--bg) 78%, transparent) 100%);
+  }
+  /* Lift main content above the fixed background layer (nav stays fixed at its own z-index) */
+  main { position: relative; z-index: 1; }
+</style>
+</head>
+
+<body>
+  <a href="#main" class="skip-link" data-i18n="skip">Saltar al contenido</a>
+
+  <div class="netreel-bg" aria-hidden="true">
+    <canvas class="netreel-bg__media" id="reel-canvas" width="1440" height="720"></canvas>
+    <div class="netreel-bg__tint"></div>
+  </div>
+
+  <div class="noise" aria-hidden="true"></div>
+  <div class="progress" aria-hidden="true"></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-tag" id="cursor-tag" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="#top" class="nav__brand" aria-label="Bruno Odella — inicio">
+      bruno<span>.</span>odella
+    </a>
+    <div class="nav__right">
+      <div class="nav__links">
+        <a href="#about" data-i18n="nav_about">Sobre mí</a>
+        <a href="#stack" data-i18n="nav_stack">Stack</a>
+        <a href="#work" data-i18n="nav_work">Proyectos</a>
+        <a href="#contact" data-i18n="nav_contact">Contacto</a>
+      </div>
+      <button class="pill" id="lang-toggle" aria-label="Toggle language" aria-pressed="false">
+        <span id="lang-label">ES</span> / <span id="lang-other" style="opacity:0.4">EN</span>
+      </button>
+      <button class="toggle-track" id="theme-toggle" aria-label="Toggle theme" aria-pressed="false"></button>
+    </div>
+  </nav>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero__meta reveal-stagger">
+        <div class="hero__meta-item"><span data-i18n="hero_role_label">Rol</span><span data-i18n="hero_role">Estudiante / Profesor / Dev</span></div>
+        <div class="hero__meta-item"><span data-i18n="hero_loc_label">Ubicación</span>Montevideo, UY</div>
+        <div class="hero__meta-item"><span data-i18n="hero_edu_label">Formación</span>ORT · Lic. Ing. SW · Tesis</div>
+        <div class="hero__meta-item"><span data-i18n="hero_year_label">Hora local</span><span class="live-time"><span class="live-time__dot"></span><span id="live-clock">--:--:--</span></span></div>
+      </div>
+
+      <div>
+        <h1 class="hero__name reveal">
+          <span class="row mask-line"><span>Bruno</span></span>
+          <span class="row mask-line"><span><em>Odella<span class="accent">.</span></em><span class="name-caret"></span></span></span>
+        </h1>
+      </div>
+
+      <div class="hero__bottom">
+        <div>
+          <span class="available reveal" data-i18n="available">Disponible para primer empleo formal</span>
+        </div>
+        <p class="hero__lede reveal" data-i18n="hero_lede">
+          <strong>Licenciado en Ingeniería de Software</strong> por la Universidad ORT Uruguay, cursando la tesis para recibirme de Ingeniero. Construyo software para producción y doy clase de <em>Teoría de la Computación</em> en la misma facultad.
+        </p>
+      </div>
+
+      <div class="hero__bottom" style="border:none; padding-top:24px; margin-top:auto;">
+        <span class="scroll-hint"><span class="line"></span> <span data-i18n="scroll">Desplazá</span></span>
+        <span class="scroll-hint" style="justify-self:end;"><span data-i18n="index">Índice 00 — 05</span></span>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <header class="section-head">
+        <span class="section-num">00 / <span data-i18n="about_label">SOBRE MÍ</span></span>
+        <h2 class="section-title" data-i18n="about_title">Una <em>introducción</em> breve.</h2>
+      </header>
+
+      <div class="about">
+        <div class="about__photo reveal" data-caption="2026">
+          <img src="assets/bruno.jpg" alt="Retrato de Bruno Odella" />
+        </div>
+        <div class="about__text">
+          <p class="reveal" data-i18n="about_p1">
+            Soy <em>Ayudante de Ingeniero</em> y <em>Licenciado en Ingeniería de Software</em> por la Universidad ORT Uruguay, en el noveno semestre encarando la tesis para recibirme de Ingeniero en Sistemas. En paralelo, doy clase como profesor práctico de <em>Teoría de la Computación</em> en la misma facultad — la materia donde se desarman lenguajes y evaluadores desde adentro: χ, IMP, máquinas de Turing, cálculo lambda.
+          </p>
+          <p class="reveal" data-i18n="about_p2">
+            Me interesa el software bien hecho: arquitectura clara, código que otros pueden leer, decisiones técnicas que se justifican. Trabajo con .NET, Angular, AWS y el stack alrededor; me siento cómodo bajando a temas de redes, concurrencia o estructuras de datos cuando hace falta. Vivo en Uruguay y estoy listo para sumarme a un equipo que tome el oficio en serio.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TERMINAL -->
+    <section class="terminal-section" id="console" aria-label="Terminal interactivo">
+      <header class="section-head">
+        <span class="section-num">01 / <span data-i18n="term_label">CONSOLA</span></span>
+        <h2 class="section-title" data-i18n="term_title"><em>$</em> whoami<span class="accent">.</span></h2>
+      </header>
+
+      <div class="terminal reveal" role="presentation">
+        <div class="terminal__bar">
+          <span class="terminal__dot"></span>
+          <span class="terminal__dot"></span>
+          <span class="terminal__dot"></span>
+          <span class="terminal__title">bruno@odella ~ /portfolio</span>
+        </div>
+        <div class="terminal__body" id="terminal-body">
+          <!-- typed by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- STACK -->
+    <section id="stack">
+      <header class="section-head">
+        <span class="section-num">02 / <span data-i18n="stack_label">STACK</span></span>
+        <h2 class="section-title" data-i18n="stack_title">Lo que <em>uso</em> y conozco a fondo.</h2>
+      </header>
+
+      <div class="stack-grid reveal-stagger">
+        <div class="stack-cell"><div class="label">C# <em>/.NET</em></div><div class="meta"><span data-i18n="stack_lvl_advanced">AVANZADO</span><span class="num">01</span></div></div>
+        <div class="stack-cell"><div class="label">Angular</div><div class="meta"><span data-i18n="stack_lvl_advanced2">AVANZADO</span><span class="num">02</span></div></div>
+        <div class="stack-cell"><div class="label">TypeScript</div><div class="meta"><span data-i18n="stack_lvl_solid">SÓLIDO</span><span class="num">03</span></div></div>
+        <div class="stack-cell"><div class="label">SQL <em>/ DB</em></div><div class="meta"><span data-i18n="stack_lvl_solid2">SÓLIDO</span><span class="num">04</span></div></div>
+        <div class="stack-cell"><div class="label"><em>Patrones</em> de diseño</div><div class="meta"><span data-i18n="stack_concept">CONCEPTO</span><span class="num">05</span></div></div>
+        <div class="stack-cell"><div class="label"><em>Concurrencia</em></div><div class="meta"><span data-i18n="stack_concept2">CONCEPTO</span><span class="num">06</span></div></div>
+        <div class="stack-cell"><div class="label">Redes</div><div class="meta"><span data-i18n="stack_concept3">CONCEPTO</span><span class="num">07</span></div></div>
+        <div class="stack-cell"><div class="label">Algoritmos <em>/ IA</em></div><div class="meta"><span data-i18n="stack_concept4">CONCEPTO</span><span class="num">08</span></div></div>
+      </div>
+
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <span class="marquee__item">C# · .NET</span>
+          <span class="marquee__item"><em>Angular</em></span>
+          <span class="marquee__item">TypeScript</span>
+          <span class="marquee__item">SOLID</span>
+          <span class="marquee__item"><em>GoF</em> · GRASP</span>
+          <span class="marquee__item">UML2</span>
+          <span class="marquee__item">SQL</span>
+          <span class="marquee__item"><em>AWS</em></span>
+          <span class="marquee__item"><em>Concurrencia</em></span>
+          <span class="marquee__item">Sockets</span>
+          <span class="marquee__item">Algoritmos</span>
+          <!-- duplicate for seamless loop -->
+          <span class="marquee__item">C# · .NET</span>
+          <span class="marquee__item"><em>Angular</em></span>
+          <span class="marquee__item">TypeScript</span>
+          <span class="marquee__item">SOLID</span>
+          <span class="marquee__item"><em>GoF</em> · GRASP</span>
+          <span class="marquee__item">UML2</span>
+          <span class="marquee__item">SQL</span>
+          <span class="marquee__item"><em>AWS</em></span>
+          <span class="marquee__item"><em>Concurrencia</em></span>
+          <span class="marquee__item">Sockets</span>
+          <span class="marquee__item">Algoritmos</span>
+        </div>
+      </div>
+
+      <div class="stats reveal-stagger" data-stats>
+        <div class="stat"><div class="stat__num"><em data-count="5" data-suffix="+">0</em></div><div class="stat__label" data-i18n="stat_years">Años de formación · ORT</div></div>
+        <div class="stat"><div class="stat__num"><em data-count="2">0</em></div><div class="stat__label" data-i18n="stat_titles">Ayudante Ing. · Lic. Ing. SW</div></div>
+        <div class="stat"><div class="stat__num"><em>C1</em></div><div class="stat__label" data-i18n="stat_english">Inglés · Cambridge</div></div>
+        <div class="stat"><div class="stat__num"><em data-count="100" data-suffix="%">0</em></div><div class="stat__label" data-i18n="stat_commit">Excelencia técnica · Investigación</div></div>
+      </div>
+    </section>
+
+    <!-- WORK -->
+    <section id="work">
+      <header class="section-head">
+        <span class="section-num">03 / <span data-i18n="work_label">PROYECTOS</span></span>
+        <h2 class="section-title" data-i18n="work_title">Cosas que <em>construí</em>.</h2>
+      </header>
+
+      <div class="projects">
+
+        <!-- FEATURED: Street -->
+        <article class="project project--featured reveal" data-tag="street.com.uy →">
+          <div class="project__head">
+            <div class="project__top">
+              <span class="project__index">P / 01</span>
+              <span class="project__badge project__badge--live" data-i18n="badge_cloud">● EN PRODUCCIÓN · CLOUD</span>
+            </div>
+            <h3 class="project__title">Street<em>.</em></h3>
+            <p class="project__desc" data-i18n="proj_street_desc">
+              Plataforma profesional, en producción. Frontend Angular, backend .NET sobre <em>AWS Elastic Beanstalk</em>, assets servidos desde S3. Trabajo cloud-native — provisioning, costos y deploys automatizados son parte del problema, no un detalle posterior.
+            </p>
+            <div class="project__tags">
+              <span class="project__tag">Angular</span>
+              <span class="project__tag">.NET</span>
+              <span class="project__tag">AWS</span>
+              <span class="project__tag">Elastic Beanstalk</span>
+              <span class="project__tag">S3</span>
+            </div>
+            <div class="project__foot">
+              <div class="project__links">
+                <a class="project__link" href="https://www.street.com.uy/home" target="_blank" rel="noopener noreferrer" aria-label="Visitar street.com.uy">
+                  <span data-i18n="link_visit_street">Visitar sitio</span>
+                  <span class="arrow" aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project__visual" aria-hidden="true">
+            <div class="project__visual-content">
+              <div class="project__visual-domain">street.com.uy</div>
+              <div class="project__visual-headline">
+                <em>Cloud</em>
+                <span data-i18n="proj_street_visual">— AWS · 2026</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- FEATURED: Alsur -->
+        <article class="project project--featured reveal" data-tag="alsur.uy →">
+          <div class="project__head">
+            <div class="project__top">
+              <span class="project__index">P / 02</span>
+              <span class="project__badge project__badge--live" data-i18n="badge_live">● EN PRODUCCIÓN · FREELANCE</span>
+            </div>
+            <h3 class="project__title">Inmobiliaria <em>Alsur</em></h3>
+            <p class="project__desc" data-i18n="proj_alsur_desc">
+              Proyecto profesional real, en producción. Frontend en Angular, API en .NET y base de datos relacional. Cliente real, deadlines reales, decisiones de arquitectura que viven en internet todos los días.
+            </p>
+            <div class="project__tags">
+              <span class="project__tag">Angular</span>
+              <span class="project__tag">.NET</span>
+              <span class="project__tag">SQL</span>
+              <span class="project__tag" data-i18n="tag_freelance">Freelance</span>
+              <span class="project__tag" data-i18n="tag_production">Producción</span>
+            </div>
+            <div class="project__foot">
+              <div class="project__links">
+                <a class="project__link" href="https://alsur.uy/inicio" target="_blank" rel="noopener noreferrer" aria-label="Visitar alsur.uy">
+                  <span data-i18n="link_visit">Visitar sitio</span>
+                  <span class="arrow" aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project__visual" aria-hidden="true">
+            <div class="project__visual-content">
+              <div class="project__visual-domain">alsur.uy</div>
+              <div class="project__visual-headline">
+                <em>Inmuebles</em>
+                <span data-i18n="proj_alsur_visual">— en vivo desde 2024</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 02 BuildingManagementAPI -->
+        <article class="project reveal" data-tag="github · BMA →">
+          <div class="project__head">
+            <div class="project__top">
+              <span class="project__index">P / 03</span>
+              <span class="project__badge" data-i18n="badge_academic">ACADÉMICO</span>
+            </div>
+            <h3 class="project__title">Building <em>Management</em> API</h3>
+            <p class="project__desc" data-i18n="proj_bma_desc">
+              Sistema de gestión de edificios. API REST en .NET con frontend Angular. Aplicación rigurosa de SOLID, patrones GoF y GRASP, modelado en UML2 y métricas de calidad de código como criterio de diseño, no como adorno.
+            </p>
+            <div class="project__tags">
+              <span class="project__tag">.NET</span>
+              <span class="project__tag">Angular</span>
+              <span class="project__tag">SOLID</span>
+              <span class="project__tag">GoF · GRASP</span>
+              <span class="project__tag">UML2</span>
+            </div>
+          </div>
+          <div class="project__foot">
+            <div class="project__links">
+              <a class="project__link" href="https://github.com/BrunoOdella/BuildingManagementAPI" target="_blank" rel="noopener noreferrer">
+                <span data-i18n="link_repo">Ver repo</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 03 SharedTravelApp -->
+        <article class="project reveal" data-tag="github · STA →">
+          <div class="project__head">
+            <div class="project__top">
+              <span class="project__index">P / 04</span>
+              <span class="project__badge" data-i18n="badge_systems">SISTEMAS</span>
+            </div>
+            <h3 class="project__title">Shared <em>Travel</em> App</h3>
+            <p class="project__desc" data-i18n="proj_sta_desc">
+              App de viajes compartidos. El foco no era el dominio: era resolver concurrencia real, paralelismo y comunicación con protocolos de red de bajo nivel. Sockets, sincronización, threads — el plomería del software distribuido.
+            </p>
+            <div class="project__tags">
+              <span class="project__tag" data-i18n="tag_concurrency">Concurrencia</span>
+              <span class="project__tag" data-i18n="tag_parallel">Paralelismo</span>
+              <span class="project__tag">Sockets</span>
+              <span class="project__tag" data-i18n="tag_lowlevel">Bajo nivel</span>
+            </div>
+          </div>
+          <div class="project__foot">
+            <div class="project__links">
+              <a class="project__link" href="https://github.com/BrunoOdella/SharedTravelApp" target="_blank" rel="noopener noreferrer">
+                <span data-i18n="link_repo2">Ver repo</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 04 Redes -->
+        <article class="project reveal" data-tag="github · redes →">
+          <div class="project__head">
+            <div class="project__top">
+              <span class="project__index">P / 05</span>
+              <span class="project__badge" data-i18n="badge_networking">REDES</span>
+            </div>
+            <h3 class="project__title">Modelo <em>híbrido</em> de redes</h3>
+            <p class="project__desc" data-i18n="proj_net_desc">
+              Implementación de un modelo híbrido para redes informáticas. Trabajo de capas, encapsulado y comportamiento de protocolos — entender qué pasa por debajo cuando un paquete viaja.
+            </p>
+            <div class="project__tags">
+              <span class="project__tag">TCP/IP</span>
+              <span class="project__tag" data-i18n="tag_layers">Capas</span>
+              <span class="project__tag" data-i18n="tag_protocols">Protocolos</span>
+            </div>
+          </div>
+          <div class="project__foot">
+            <div class="project__links">
+              <a class="project__link" href="https://github.com/BrunoOdella/redes-informaticas-modelo-hibrido" target="_blank" rel="noopener noreferrer">
+                <span data-i18n="link_repo3">Ver repo</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 05 EDA -->
+        <article class="project reveal" data-tag="github · EDA →">
+          <div class="project__head">
+            <div class="project__top">
+              <span class="project__index">P / 06</span>
+              <span class="project__badge" data-i18n="badge_fundamentals">FUNDAMENTOS</span>
+            </div>
+            <h3 class="project__title"><em>Estructuras</em> y algoritmos</h3>
+            <p class="project__desc" data-i18n="proj_eda_desc">
+              Implementación desde cero de estructuras de datos y algoritmos avanzados. Sin librerías, sin atajos: árboles, grafos, hashing, complejidad. Los fundamentos que aparecen en cada decisión técnica más adelante.
+            </p>
+            <div class="project__tags">
+              <span class="project__tag" data-i18n="tag_dsa">EDA</span>
+              <span class="project__tag" data-i18n="tag_complexity">Complejidad</span>
+              <span class="project__tag" data-i18n="tag_graphs">Grafos</span>
+            </div>
+          </div>
+          <div class="project__foot">
+            <div class="project__links">
+              <a class="project__link" href="https://github.com/BrunoOdella/estructuras-y-algoritmos-2" target="_blank" rel="noopener noreferrer">
+                <span data-i18n="link_repo4">Ver repo</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 06 IA -->
+        <article class="project reveal" data-tag="github · IA →">
+          <div class="project__head">
+            <div class="project__top">
+              <span class="project__index">P / 07</span>
+              <span class="project__badge">IA</span>
+            </div>
+            <h3 class="project__title">Inteligencia <em>artificial</em></h3>
+            <p class="project__desc" data-i18n="proj_ia_desc">
+              Trabajo académico de IA aplicado a problemas complejos. Búsqueda, heurísticas y representación de conocimiento — entender la materia desde adentro, no como cliente de una API.
+            </p>
+            <div class="project__tags">
+              <span class="project__tag" data-i18n="tag_search">Búsqueda</span>
+              <span class="project__tag" data-i18n="tag_heuristics">Heurísticas</span>
+              <span class="project__tag">Python</span>
+            </div>
+          </div>
+          <div class="project__foot">
+            <div class="project__links">
+              <a class="project__link" href="https://github.com/BrunoOdella/IA" target="_blank" rel="noopener noreferrer">
+                <span data-i18n="link_repo5">Ver repo</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <header class="section-head">
+        <span class="section-num">04 / <span data-i18n="contact_label">CONTACTO</span></span>
+        <h2 class="section-title" data-i18n="contact_title">Hablemos.</h2>
+      </header>
+
+      <h3 class="contact-head reveal">
+        <span data-i18n="contact_head_1">¿Trabajamos</span>
+        <em data-i18n="contact_head_2">juntos</em><span class="accent">?</span>
+      </h3>
+
+      <div class="contact-grid reveal-stagger">
+        <a class="contact-card" href="mailto:brunoodella@gmail.com" aria-label="Enviar email a brunoodella@gmail.com">
+          <span class="channel" data-i18n="ch_email">Email · Lo más directo</span>
+          <span class="value">brunoodella<wbr/>@gmail.com</span>
+          <span class="meta"><span>01</span><span data-i18n="ch_response">RESP. ~24H</span></span>
+        </a>
+        <a class="contact-card" href="https://wa.me/59895198666" target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp">
+          <span class="channel" data-i18n="ch_wa">WhatsApp · Conversación rápida</span>
+          <span class="value">+598 95 198 666</span>
+          <span class="meta"><span>02</span><span data-i18n="ch_uy">UY · GMT−3</span></span>
+        </a>
+        <a class="contact-card" href="https://github.com/BrunoOdella" target="_blank" rel="noopener noreferrer" aria-label="Ver perfil de GitHub">
+          <span class="channel" data-i18n="ch_gh">GitHub · El código habla</span>
+          <span class="value">@BrunoOdella</span>
+          <span class="meta"><span>03</span><span data-i18n="ch_repos">REPOS PÚBLICOS</span></span>
+        </a>
+      </div>
+
+      <footer>
+        <span data-i18n="footer_left">© 2026 Bruno Odella · Hecho a mano en Montevideo</span>
+        <span><a href="#top" data-i18n="footer_top">Volver arriba ↑</a></span>
+      </footer>
+    </section>
+
+  </main>
+
+<script>
+document.documentElement.classList.add("js");
+(() => {
+  // ---------- I18N ----------
+  const dict = {
+    en: {
+      skip: "Skip to content",
+      nav_about: "About", nav_stack: "Stack", nav_work: "Work", nav_contact: "Contact",
+      hero_role_label: "Role", hero_role: "Student / Teacher / Dev",
+      hero_loc_label: "Location",
+      hero_edu_label: "Education",
+      hero_year_label: "Year",
+      hero_lede: '<strong>Bachelor of Software Engineering</strong> from Universidad ORT Uruguay, working on my thesis to graduate as a Systems Engineer. I build software for production and teach <em>Theory of Computation</em> at the same university.',
+      available: "Available — looking for first formal role",
+      scroll: "Scroll",
+      index: "Index 00 — 04",
+      about_label: "ABOUT",
+      about_title: "A short <em>introduction.</em>",
+      about_p1: "I hold an <em>Engineering Aide</em> certification and a <em>Bachelor's in Software Engineering</em> from Universidad ORT Uruguay; I'm in my ninth semester, working on my thesis to graduate as a Systems Engineer. In parallel, I teach <em>Theory of Computation</em> as a practical lecturer at the same university — the course where you take languages and their evaluators apart from the inside: χ, IMP, Turing machines, lambda calculus.",
+      about_p2: "I care about software that's well-made: clear architecture, code other people can read, technical decisions you can defend. I work with .NET, Angular, AWS and the surrounding stack; I'm comfortable dropping into networking, concurrency, or data structures when the problem calls for it. Based in Uruguay, ready to join a team that takes the craft seriously.",
+      stack_label: "STACK",
+      stack_title: "What I <em>use</em> daily.",
+      stack_lvl_advanced: "ADVANCED", stack_lvl_advanced2: "ADVANCED",
+      stack_lvl_solid: "SOLID", stack_lvl_solid2: "SOLID",
+      stack_concept: "CORE CONCEPT", stack_concept2: "CORE CONCEPT", stack_concept3: "CORE CONCEPT", stack_concept4: "CORE CONCEPT",
+      work_label: "WORK",
+      work_title: "Things I've <em>built.</em>",
+      badge_live: "● LIVE · FREELANCE",
+      badge_cloud: "● LIVE · CLOUD",
+      badge_academic: "ACADEMIC",
+      badge_systems: "SYSTEMS",
+      badge_networking: "NETWORKING",
+      badge_fundamentals: "FUNDAMENTALS",
+      proj_alsur_desc: "A real client project, live in production. Angular frontend, .NET API, relational database. Real client, real deadlines, architecture decisions running on the public internet every day.",
+      proj_alsur_visual: "— live since 2024",
+      proj_street_desc: "Professional platform, live in production. Angular frontend, .NET backend on <em>AWS Elastic Beanstalk</em>, assets served from S3. Cloud-native work — provisioning, cost and automated deploys are part of the problem, not an afterthought.",
+      proj_street_visual: "— AWS · 2026",
+      link_visit_street: "Visit site",
+      tag_freelance: "Freelance", tag_production: "Production",
+      proj_bma_desc: "Building management system. REST API in .NET with an Angular frontend. Disciplined application of SOLID, GoF and GRASP patterns, UML2 modeling, and code-quality metrics as a design constraint — not decoration.",
+      proj_sta_desc: "Ride-sharing application. The interesting part wasn't the domain: it was solving real concurrency, parallelism, and low-level network protocols. Sockets, synchronization, threads — distributed systems plumbing.",
+      tag_concurrency: "Concurrency", tag_parallel: "Parallelism", tag_lowlevel: "Low-level",
+      proj_net_desc: "A hybrid model implementation for computer networks. Layering, encapsulation, and protocol behavior — understanding what's happening beneath when a packet travels.",
+      tag_layers: "Layering", tag_protocols: "Protocols",
+      proj_eda_desc: "From-scratch implementation of advanced data structures and algorithms. No libraries, no shortcuts: trees, graphs, hashing, complexity. The fundamentals that show up in every later technical decision.",
+      tag_dsa: "DSA", tag_complexity: "Complexity", tag_graphs: "Graphs",
+      proj_ia_desc: "Academic AI project applied to complex problems. Search, heuristics, knowledge representation — understanding the material from inside, not as an API consumer.",
+      tag_search: "Search", tag_heuristics: "Heuristics",
+      link_visit: "Visit site",
+      link_repo: "View repo", link_repo2: "View repo", link_repo3: "View repo", link_repo4: "View repo", link_repo5: "View repo",
+      contact_label: "CONTACT",
+      contact_title: "Let's talk.",
+      contact_head_1: "Shall we",
+      contact_head_2: "build something",
+      ch_email: "Email · The most direct",
+      ch_response: "REPLY ~24H",
+      ch_wa: "WhatsApp · Quick chat",
+      ch_uy: "UY · GMT−3",
+      ch_gh: "GitHub · Code talks",
+      ch_repos: "PUBLIC REPOS",
+      footer_left: "© 2026 Bruno Odella · Handmade in Montevideo",
+      footer_top: "Back to top ↑",
+      term_label: "CONSOLE",
+      term_title: "<em>$</em> whoami<span class=\"accent\">.</span>",
+      stat_years: "Years of training · ORT",
+      stat_titles: "Engineering Aide · BSc SW Eng.",
+      stat_english: "English · Cambridge",
+      stat_commit: "Technical excellence · Research"
+    }
+  };
+  // Save the original Spanish strings into dict.es from the DOM.
+  const es = {};
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    es[el.dataset.i18n] = el.innerHTML;
+  });
+  dict.es = es;
+
+  function applyLang(lang) {
+    document.documentElement.lang = lang === "en" ? "en" : "es";
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      const key = el.dataset.i18n;
+      if (dict[lang] && dict[lang][key] !== undefined) {
+        el.innerHTML = dict[lang][key];
+      }
+    });
+    document.getElementById("lang-label").textContent = lang.toUpperCase();
+    document.getElementById("lang-other").textContent = lang === "es" ? "EN" : "ES";
+    document.getElementById("lang-toggle").setAttribute("aria-pressed", lang === "en");
+    localStorage.setItem("bo-lang", lang);
+    document.dispatchEvent(new CustomEvent("bo:langchange", { detail: { lang } }));
+  }
+  const savedLang = localStorage.getItem("bo-lang") || (navigator.language?.startsWith("en") ? "en" : "es");
+  applyLang(savedLang);
+  document.getElementById("lang-toggle").addEventListener("click", () => {
+    const cur = document.documentElement.lang === "en" ? "en" : "es";
+    applyLang(cur === "en" ? "es" : "en");
+  });
+
+  // ---------- THEME ----------
+  const themeBtn = document.getElementById("theme-toggle");
+  function applyTheme(t) {
+    document.documentElement.setAttribute("data-theme", t);
+    themeBtn.setAttribute("aria-pressed", t === "dark");
+    localStorage.setItem("bo-theme", t);
+  }
+  const stored = localStorage.getItem("bo-theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  applyTheme(stored || (prefersDark ? "dark" : "light"));
+  themeBtn.addEventListener("click", () => {
+    const cur = document.documentElement.getAttribute("data-theme");
+    applyTheme(cur === "dark" ? "light" : "dark");
+  });
+
+  // ---------- NAV BORDER + SCROLL PROGRESS ----------
+  const nav = document.querySelector(".nav");
+  const progress = document.querySelector(".progress");
+  function onScroll() {
+    const y = window.scrollY;
+    nav.classList.toggle("scrolled", y > 12);
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const p = h > 0 ? (y / h) * 100 : 0;
+    progress.style.setProperty("--p", p + "%");
+  }
+  document.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  // ---------- REVEAL ON SCROLL ----------
+  const revealEls = document.querySelectorAll(".reveal, .reveal-stagger");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("in");
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0, rootMargin: "0px 0px -10% 0px" });
+    revealEls.forEach((el) => {
+      // If element is already in (or above) the viewport on load, reveal immediately.
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.95) {
+        el.classList.add("in");
+      } else {
+        io.observe(el);
+      }
+    });
+  } else {
+    revealEls.forEach((el) => el.classList.add("in"));
+  }
+  // Safety net: ensure everything visible after 1.5s in case anything slipped.
+  setTimeout(() => {
+    document.querySelectorAll(".reveal, .reveal-stagger").forEach((el) => el.classList.add("in"));
+  }, 1500);
+
+  // ---------- PARALLAX ----------
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const parallaxEls = [
+    { el: document.querySelector(".hero__name"), speed: 0.18 },
+    { el: document.querySelector(".hero__lede"), speed: 0.08 },
+    { el: document.querySelector(".about__photo"), speed: -0.06 },
+  ].filter(x => x.el);
+  parallaxEls.forEach(p => p.el.classList.add("parallax"));
+
+  let lastScroll = 0, paraRaf = 0;
+  function applyParallax() {
+    paraRaf = 0;
+    parallaxEls.forEach(({ el, speed }) => {
+      const r = el.getBoundingClientRect();
+      const center = r.top + r.height / 2;
+      const offset = (center - window.innerHeight / 2) * speed * -1;
+      el.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0)`;
+    });
+  }
+  if (!reduced && parallaxEls.length) {
+    window.addEventListener("scroll", () => {
+      if (!paraRaf) paraRaf = requestAnimationFrame(applyParallax);
+    }, { passive: true });
+    applyParallax();
+  }
+
+  // ---------- TERMINAL TYPEWRITER ----------
+  const termBody = document.getElementById("terminal-body");
+  if (termBody) {
+    function buildScript(lang) {
+      const dicts = {
+        en: {
+          whoamiOut: "bruno odella · systems engineer (in progress)",
+          kLocation: "location", kUniversity: "university", kDegrees: "degrees",
+          kEnglish: "english", kSemester: "semester", kThesis: "thesis",
+          kTeaches: "teaches", kStack: "stack", kStatus: "status",
+          vDegree1: "Engineering Aide", vDegree2: "BSc Software Eng.",
+          vThesis: "in_progress (engineering)",
+          vTeaches: "theory_of_computation",
+          vStatus: "open_to_work",
+          projComment: "# 2 in production, 5 academic, public on github",
+          streetMeta: "aws · elastic-beanstalk · s3",
+          bmaMeta: ".NET · SOLID · GoF",
+          staMeta: "concurrency · sockets",
+        },
+        es: {
+          whoamiOut: "bruno odella · ingeniero en sistemas (en curso)",
+          kLocation: "ubicación", kUniversity: "universidad", kDegrees: "títulos",
+          kEnglish: "inglés", kSemester: "semestre", kThesis: "tesis",
+          kTeaches: "enseña", kStack: "stack", kStatus: "estado",
+          vDegree1: "Ayudante de Ingeniero", vDegree2: "Lic. Ing. de Software",
+          vThesis: "en_progreso (ingeniería)",
+          vTeaches: "teoría_de_la_computación",
+          vStatus: "disponible",
+          projComment: "# 2 en producción, 5 académicos, públicos en github",
+          streetMeta: "aws · elastic-beanstalk · s3",
+          bmaMeta: ".NET · SOLID · GoF",
+          staMeta: "concurrencia · sockets",
+        }
+      };
+      const t = dicts[lang === "en" ? "en" : "es"];
+      return [
+        { p: true, text: "whoami", delay: 80 },
+        { out: '<span class="term-out">' + t.whoamiOut + '</span>' },
+        { p: true, text: "cat ~/about.json", delay: 60 },
+        { out: '<span class="term-out">{</span>' },
+        { out: '<span class="term-out">  <span class="term-key">"' + t.kLocation + '"</span>: <span class="term-str">"Montevideo, UY"</span>,</span>' },
+        { out: '<span class="term-out">  <span class="term-key">"' + t.kUniversity + '"</span>: <span class="term-str">"ORT Uruguay"</span>,</span>' },
+        { out: '<span class="term-out">  <span class="term-key">"' + t.kDegrees + '"</span>: [<span class="term-str">"' + t.vDegree1 + '"</span>, <span class="term-str">"' + t.vDegree2 + '"</span>],</span>' },
+        { out: '<span class="term-out">  <span class="term-key">"' + t.kEnglish + '"</span>: <span class="term-str">"C1 (Cambridge)"</span>,</span>' },
+        { out: '<span class="term-out">  <span class="term-key">"' + t.kSemester + '"</span>: <span class="term-str">9</span>,</span>' },
+        { out: '<span class="term-out">  <span class="term-key">"' + t.kThesis + '"</span>: <span class="term-str">"' + t.vThesis + '"</span>,</span>' },
+        { out: '<span class="term-out">  <span class="term-key">"' + t.kTeaches + '"</span>: <span class="term-str">"' + t.vTeaches + '"</span>,</span>' },
+        { out: '<span class="term-out">  <span class="term-key">"' + t.kStack + '"</span>: [<span class="term-str">".NET"</span>, <span class="term-str">"Angular"</span>, <span class="term-str">"AWS"</span>, <span class="term-str">"SQL"</span>],</span>' },
+        { out: '<span class="term-out">  <span class="term-key">"' + t.kStatus + '"</span>: <span class="term-str">"' + t.vStatus + '"</span></span>' },
+        { out: '<span class="term-out">}</span>' },
+        { p: true, text: "ls -la projects/", delay: 60 },
+        { out: '<span class="term-comment">' + t.projComment + '</span>' },
+        { out: '<span class="term-out">drwxr-xr-x  street-uy       <span class="term-str">[live]</span> <span class="term-comment">' + t.streetMeta + '</span></span>' },
+        { out: '<span class="term-out">drwxr-xr-x  alsur-uy        <span class="term-str">[live]</span></span>' },
+        { out: '<span class="term-out">drwxr-xr-x  building-mgmt   <span class="term-comment">' + t.bmaMeta + '</span></span>' },
+        { out: '<span class="term-out">drwxr-xr-x  shared-travel   <span class="term-comment">' + t.staMeta + '</span></span>' },
+        { p: true, text: "echo $READY", delay: 60 },
+        { out: '<span class="term-out" style="color: oklch(0.78 0.14 145);">true</span>' },
+        { p: true, text: "_", caret: true, delay: 80 },
+      ];
+    }
+
+    function typeChar(node, text, speed = 22) {
+      return new Promise(resolve => {
+        let i = 0;
+        const tick = () => {
+          node.textContent = text.slice(0, ++i);
+          if (i < text.length) setTimeout(tick, speed + Math.random() * 24);
+          else resolve();
+        };
+        tick();
+      });
+    }
+
+    function staticRender(lang) {
+      termBody.innerHTML = "";
+      buildScript(lang).forEach(step => {
+        const line = document.createElement("span");
+        line.className = "term-line";
+        if (step.p) {
+          line.innerHTML = '<span class="term-prompt"></span><span style="color: oklch(0.94 0.006 75);">' + step.text + '</span>' + (step.caret ? '<span class="caret"></span>' : '');
+        } else {
+          line.innerHTML = step.out;
+        }
+        termBody.appendChild(line);
+      });
+    }
+
+    async function runTerminal(lang) {
+      termBody.innerHTML = "";
+      const script = buildScript(lang);
+      for (const step of script) {
+        const line = document.createElement("span");
+        line.className = "term-line";
+        if (step.p) {
+          const prompt = document.createElement("span");
+          prompt.className = "term-prompt";
+          line.appendChild(prompt);
+          const cmd = document.createElement("span");
+          cmd.style.color = "oklch(0.94 0.006 75)";
+          line.appendChild(cmd);
+          if (step.caret) {
+            const caretEl = document.createElement("span");
+            caretEl.className = "caret";
+            line.appendChild(caretEl);
+          }
+          termBody.appendChild(line);
+          await typeChar(cmd, step.text, 28);
+          await new Promise(r => setTimeout(r, step.delay || 120));
+        } else {
+          line.innerHTML = step.out;
+          termBody.appendChild(line);
+          await new Promise(r => setTimeout(r, 90));
+        }
+      }
+    }
+
+    const currentLang = () => document.documentElement.lang === "en" ? "en" : "es";
+
+    // Run only once when terminal scrolls into view
+    let started = false;
+    const termIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !started) {
+          started = true;
+          const lang = currentLang();
+          if (reduced) staticRender(lang);
+          else runTerminal(lang);
+          termIO.disconnect();
+        }
+      });
+    }, { threshold: 0.25 });
+    termIO.observe(termBody);
+
+    // Re-render statically (no animation) when language changes after first render
+    document.addEventListener("bo:langchange", (e) => {
+      if (!started) return;
+      staticRender(e.detail.lang);
+    });
+  }
+
+  // ---------- CUSTOM CURSOR ----------
+  const dot = document.querySelector(".cursor-dot");
+  let cx = 0, cy = 0, tx = 0, ty = 0, raf = 0, visible = false;
+  function moveDot() {
+    cx += (tx - cx) * 0.22;
+    cy += (ty - cy) * 0.22;
+    dot.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+    raf = requestAnimationFrame(moveDot);
+  }
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    document.addEventListener("mousemove", (e) => {
+      tx = e.clientX; ty = e.clientY;
+      if (!visible) { dot.classList.add("visible"); visible = true; }
+      if (!raf) moveDot();
+    });
+    document.addEventListener("mouseleave", () => { dot.classList.remove("visible"); visible = false; });
+    document.querySelectorAll("a, button").forEach((el) => {
+      el.addEventListener("mouseenter", () => dot.classList.add("hover"));
+      el.addEventListener("mouseleave", () => dot.classList.remove("hover"));
+    });
+    // Project cursor tag
+    const cursorTag = document.getElementById("cursor-tag");
+    document.querySelectorAll(".project[data-tag]").forEach((el) => {
+      el.addEventListener("mouseenter", () => {
+        cursorTag.textContent = el.dataset.tag;
+        cursorTag.classList.add("show");
+        dot.classList.add("hover");
+      });
+      el.addEventListener("mouseleave", () => {
+        cursorTag.classList.remove("show");
+        dot.classList.remove("hover");
+      });
+    });
+    document.addEventListener("mousemove", (e) => {
+      cursorTag.style.left = e.clientX + "px";
+      cursorTag.style.top = e.clientY + "px";
+    });
+  }
+
+  // ---------- LIVE CLOCK (Montevideo, GMT-3) ----------
+  const clock = document.getElementById("live-clock");
+  if (clock) {
+    function tickClock() {
+      const now = new Date();
+      // Format in America/Montevideo timezone
+      const fmt = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "America/Montevideo",
+        hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+      });
+      clock.textContent = fmt.format(now) + " UY";
+    }
+    tickClock();
+    setInterval(tickClock, 1000);
+  }
+
+  // ---------- STATS COUNTER ----------
+  const statsBlock = document.querySelector("[data-stats]");
+  if (statsBlock) {
+    const statsIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        e.target.querySelectorAll("[data-count]").forEach((el) => {
+          const target = parseInt(el.dataset.count, 10);
+          const suffix = el.dataset.suffix || "";
+          const dur = 1400;
+          const start = performance.now();
+          function step(now) {
+            const t = Math.min(1, (now - start) / dur);
+            const eased = 1 - Math.pow(1 - t, 3);
+            el.textContent = Math.round(target * eased) + suffix;
+            if (t < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+        statsIO.unobserve(e.target);
+      });
+    }, { threshold: 0.4 });
+    statsIO.observe(statsBlock);
+  }
+
+  // ---------- SCRAMBLE TEXT (section nums) ----------
+  const scrambleChars = "▮▯/01234567ABCDEF#$";
+  function scramble(el, finalText, dur = 700) {
+    const start = performance.now();
+    function step(now) {
+      const t = Math.min(1, (now - start) / dur);
+      const reveal = Math.floor(finalText.length * t);
+      let out = finalText.slice(0, reveal);
+      for (let i = reveal; i < finalText.length; i++) {
+        out += scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+      }
+      el.textContent = out;
+      if (t < 1) requestAnimationFrame(step);
+      else el.textContent = finalText;
+    }
+    requestAnimationFrame(step);
+  }
+  const scrambleIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        const orig = el.textContent;
+        scramble(el, orig, 600);
+        scrambleIO.unobserve(el);
+      }
+    });
+  }, { threshold: 0.6 });
+  // Only scramble the "00 / " part — first text node — by wrapping it
+  document.querySelectorAll(".section-num").forEach((el) => {
+    // Just observe the entire span, scramble its full text
+    scrambleIO.observe(el);
+  });
+
+  // ---------- NETREEL: full-page background frame sequence bound to scroll ----------
+  (function netreel() {
+    const canvas = document.getElementById("reel-canvas");
+    if (!canvas) return;
+
+    const FRAME_COUNT = 90;
+    const PAD = 3;
+    const framePath = (i) =>
+      "assets/frames/frame_" + String(i).padStart(PAD, "0") + ".jpg";
+
+    // alpha:true (default) — canvas stays transparent until we draw, no black flash.
+    const ctx = canvas.getContext("2d");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const images = new Array(FRAME_COUNT);
+    let loadedCount = 0;
+    let currentDrawn = -1;
+    let targetIdx = 0;
+
+    function tryDraw() {
+      // Find the loaded frame closest to targetIdx and paint it.
+      const target = targetIdx;
+      let pick = -1;
+      const aimed = images[target];
+      if (aimed && aimed.complete && aimed.naturalWidth > 0) {
+        pick = target;
+      } else {
+        for (let r = 1; r < FRAME_COUNT; r++) {
+          const a = target - r, b = target + r;
+          if (a >= 0) {
+            const ia = images[a];
+            if (ia && ia.complete && ia.naturalWidth > 0) { pick = a; break; }
+          }
+          if (b < FRAME_COUNT) {
+            const ib = images[b];
+            if (ib && ib.complete && ib.naturalWidth > 0) { pick = b; break; }
+          }
+        }
+      }
+      if (pick === -1 || pick === currentDrawn) return;
+      ctx.drawImage(images[pick], 0, 0, canvas.width, canvas.height);
+      currentDrawn = pick;
+    }
+
+    function preload() {
+      for (let i = 0; i < FRAME_COUNT; i++) {
+        const img = new Image();
+        img.decoding = "async";
+        img.loading = "eager";
+        img.onload = () => { loadedCount++; tryDraw(); };
+        img.onerror = () => { loadedCount++; };
+        img.src = framePath(i);
+        images[i] = img;
+      }
+    }
+
+    function computeProgress() {
+      const max = (document.documentElement.scrollHeight || document.body.scrollHeight) - window.innerHeight;
+      if (max <= 0) return 0;
+      const p = window.scrollY / max;
+      return p < 0 ? 0 : p > 1 ? 1 : p;
+    }
+
+    let scheduled = false;
+    function update() {
+      scheduled = false;
+      const p = computeProgress();
+      targetIdx = Math.round(p * (FRAME_COUNT - 1));
+      tryDraw();
+    }
+    function schedule() {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(update);
+    }
+
+    preload();
+
+    if (reducedMotion) {
+      targetIdx = Math.floor(FRAME_COUNT / 2);
+      tryDraw();
+    } else {
+      window.addEventListener("scroll", schedule, { passive: true });
+      window.addEventListener("resize", schedule);
+      schedule();
+    }
+  })();
+
+})();
+</script>
+</body>
+</html>
