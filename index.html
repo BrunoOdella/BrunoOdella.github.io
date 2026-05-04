@@ -1622,13 +1622,25 @@ document.documentElement.classList.add("js");
   }
   if (!reduced && parallaxEls.length) {
     recomputeParallaxBaselines();
+    let lastVW = window.innerWidth;
+    function settleParallax() {
+      lastVW = window.innerWidth;
+      recomputeParallaxBaselines();
+      if (!paraRaf) paraRaf = requestAnimationFrame(applyParallax);
+    }
     window.addEventListener("scroll", () => {
       if (!paraRaf) paraRaf = requestAnimationFrame(applyParallax);
     }, { passive: true });
     window.addEventListener("resize", () => {
-      recomputeParallaxBaselines();
-      if (!paraRaf) paraRaf = requestAnimationFrame(applyParallax);
+      if (window.innerWidth === lastVW) {
+        if (!paraRaf) paraRaf = requestAnimationFrame(applyParallax);
+        return;
+      }
+      settleParallax();
     });
+    window.addEventListener("orientationchange", () => requestAnimationFrame(settleParallax));
+    window.addEventListener("load", settleParallax);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(settleParallax);
     applyParallax();
   }
 
