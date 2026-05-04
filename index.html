@@ -1947,34 +1947,20 @@ document.documentElement.classList.add("js");
     }
 
     function tryDraw() {
-      const target = targetIdx;
-      if (Math.abs(target - currentDrawn) < 0.005) return;
-      const low = Math.max(0, Math.min(FRAME_COUNT - 1, Math.floor(target)));
-      const high = Math.max(0, Math.min(FRAME_COUNT - 1, Math.ceil(target)));
-      const blend = target - low;
-
-      const imgLow = nearestLoaded(low);
-      if (!imgLow) return;
+      const target = Math.max(0, Math.min(FRAME_COUNT - 1, Math.round(targetIdx)));
+      if (target === currentDrawn) return;
+      const img = nearestLoaded(target);
+      if (!img) return;
 
       const cw = canvas.width, ch = canvas.height;
-      const iw = imgLow.naturalWidth, ih = imgLow.naturalHeight;
+      const iw = img.naturalWidth, ih = img.naturalHeight;
       if (!iw || !ih) return;
       const scale = Math.max(cw / iw, ch / ih);
       const dw = iw * scale, dh = ih * scale;
       const dx = (cw - dw) / 2, dy = (ch - dh) / 2;
 
       ctx.clearRect(0, 0, cw, ch);
-      ctx.globalAlpha = 1;
-      ctx.drawImage(imgLow, dx, dy, dw, dh);
-
-      if (high !== low && blend > 0) {
-        const imgHigh = nearestLoaded(high);
-        if (imgHigh && imgHigh !== imgLow) {
-          ctx.globalAlpha = blend;
-          ctx.drawImage(imgHigh, dx, dy, dw, dh);
-          ctx.globalAlpha = 1;
-        }
-      }
+      ctx.drawImage(img, dx, dy, dw, dh);
       currentDrawn = target;
     }
 
