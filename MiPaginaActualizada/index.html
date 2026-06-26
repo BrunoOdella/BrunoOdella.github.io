@@ -1299,11 +1299,196 @@
           </div>
         </article>
 
+        <!-- Microservicios en AWS -->
+        <article class="project reveal" data-tag="github · microservices →">
+          <div class="project__head">
+            <div class="project__top">
+              <span class="project__index">P / 04</span>
+              <span class="project__badge" data-i18n="badge_academic">ACADÉMICO</span>
+            </div>
+            <h3 class="project__title">Microservicios en <em>AWS</em></h3>
+            <p class="project__desc" data-i18n="proj_micro_desc">
+              Migración de un monolito a microservicios y despliegue real en AWS. El trabajo no era solo dividir servicios: era sostener cada decisión arquitectónica con RNFs concretos y medibles. Seis microservicios independientes (User, Account, Opportunity, Notification, Audit en .NET, API Gateway), Clean Architecture en cada uno, comunicación asíncrona con SNS/SQS, workers sidecar, base de datos propia por servicio y frontend Angular en S3. Desplegado en ECS Fargate con ALB, observabilidad centralizada en New Relic y CloudWatch, pruebas de carga con K6 que validan p95 &lt; 300ms bajo 2400 req/min, CI con GitHub Actions y cumplimiento explícito de los 12 factores. Infraestructura real, costos reales, decisiones reales.
+            </p>
+            <div class="project__tags">
+              <span class="project__tag" data-i18n="tag_microservices">Microservicios</span>
+              <span class="project__tag">AWS</span>
+              <span class="project__tag">ECS Fargate</span>
+              <span class="project__tag">.NET</span>
+              <span class="project__tag">SNS/SQS</span>
+              <span class="project__tag">Docker</span>
+              <span class="project__tag">Clean Architecture</span>
+              <span class="project__tag">K6</span>
+              <span class="project__tag">New Relic</span>
+              <span class="project__tag">Angular</span>
+            </div>
+          </div>
+          <div class="project__foot">
+            <div class="project__links">
+              <a class="project__link" href="https://github.com/BrunoOde/General-microservices" target="_blank" rel="noopener noreferrer">
+                <span data-i18n="link_repo_general">Repo general</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+              <a class="project__link" href="https://github.com/BrunoOde/api-gateway" target="_blank" rel="noopener noreferrer">
+                <span>api-gateway</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+              <a class="project__link" href="https://github.com/BrunoOde/user-service" target="_blank" rel="noopener noreferrer">
+                <span>user-service</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+              <a class="project__link" href="https://github.com/BrunoOde/account-service" target="_blank" rel="noopener noreferrer">
+                <span>account-service</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+              <a class="project__link" href="https://github.com/BrunoOde/opportunity-service" target="_blank" rel="noopener noreferrer">
+                <span>opportunity-service</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+              <a class="project__link" href="https://github.com/BrunoOde/notification-service" target="_blank" rel="noopener noreferrer">
+                <span>notification-service</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+              <a class="project__link" href="https://github.com/BrunoOde/frontend" target="_blank" rel="noopener noreferrer">
+                <span>frontend</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Big Data -->
+        <article class="project reveal" data-tag="github · BigData →">
+          <div class="project__head">
+            <div class="project__top">
+              <span class="project__index">P / 05</span>
+              <span class="project__badge" data-i18n="badge_academic">ACADÉMICO</span>
+            </div>
+            <h3 class="project__title">Big <em>Data</em></h3>
+            <p class="project__desc" data-i18n="proj_bigdata_desc">
+              Proyecto académico de Big Data. Pipeline completo de ingesta, procesamiento y análisis: datos cargados con NiFi a HDFS, exploración y limpieza con PySpark en JupyterLabs, modelado normalizado con claves primarias únicas, almacenamiento en Hive y visualizaciones con GeoPandas, Bokeh y SuperSet. Cuatro datasets de salud (depresión, enfermedades cardíacas, salud mental, tabaco y drogas en jóvenes), cinco preguntas analíticas cruzadas y una propuesta alternativa sobre stack Azure cloud-native.
+            </p>
+            <div class="project__tags">
+              <span class="project__tag">PySpark</span>
+              <span class="project__tag">HDFS</span>
+              <span class="project__tag">NiFi</span>
+              <span class="project__tag">Hive</span>
+              <span class="project__tag">Hadoop</span>
+              <span class="project__tag">Bokeh</span>
+              <span class="project__tag">SuperSet</span>
+              <span class="project__tag">Python</span>
+            </div>
+          </div>
+          <div class="project__foot">
+            <div class="project__links">
+              <a class="project__link" href="https://github.com/BrunoOde/BigData" target="_blank" rel="noopener noreferrer">
+                <span data-i18n="link_repo">Ver repo</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Machine Learning -->
+        <article class="project reveal" data-tag="github · ML →">
+          <div class="project__head">
+            <div class="project__top">
+              <span class="project__index">P / 06</span>
+              <span class="project__badge" data-i18n="badge_academic">ACADÉMICO</span>
+            </div>
+            <h3 class="project__title">Machine <em>Learning</em></h3>
+            <p class="project__desc" data-i18n="proj_ml_desc">
+              Proyecto académico de ML con dos problemas. Problema 1: clasificación binaria de opiniones sobre películas — feature engineering desde cero (20 variables derivadas), cinco clasificadores (Regresión Logística, Árbol de Decisión, Random Forest, Gradient Boosting, Redes Neuronales en tres arquitecturas), validación con Hold-Out, Repeated Hold-Out y Cross-Validation estratificada. Modelo final: Gradient Boosting con F1 de 0.75, validado en competencia Kaggle. Problema 2: NLP para predicción de género cinematográfico — pipeline de texto con NLTK, lematización, TF-IDF y GridSearchCV sobre ~8700 combinaciones.
+            </p>
+            <div class="project__tags">
+              <span class="project__tag">Python</span>
+              <span class="project__tag">Scikit-learn</span>
+              <span class="project__tag">Keras</span>
+              <span class="project__tag">NLP</span>
+              <span class="project__tag">Gradient Boosting</span>
+              <span class="project__tag">Random Forest</span>
+              <span class="project__tag">TF-IDF</span>
+              <span class="project__tag">Kaggle</span>
+            </div>
+          </div>
+          <div class="project__foot">
+            <div class="project__links">
+              <a class="project__link" href="https://github.com/BrunoOde/ML" target="_blank" rel="noopener noreferrer">
+                <span data-i18n="link_repo">Ver repo</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- DAO en Ethereum -->
+        <article class="project reveal" data-tag="github · blockchain →">
+          <div class="project__head">
+            <div class="project__top">
+              <span class="project__index">P / 07</span>
+              <span class="project__badge" data-i18n="badge_blockchain">BLOCKCHAIN</span>
+            </div>
+            <h3 class="project__title">DAO en <em>Ethereum</em></h3>
+            <p class="project__desc" data-i18n="proj_dao_desc">
+              Prueba de concepto de gobernanza descentralizada sobre EVM. Smart contracts en Solidity con tokens ERC-20, staking con recompensas, votación on-chain ponderada por stake, multisig y mecanismo de pánico. Frontend en React con Ethers.js, desplegado y verificado en Sepolia Testnet. 77 tests, 98.8% de cobertura de statements, 100% de funciones y líneas.
+            </p>
+            <div class="project__tags">
+              <span class="project__tag">Solidity</span>
+              <span class="project__tag">Ethereum</span>
+              <span class="project__tag">ERC-20</span>
+              <span class="project__tag">Hardhat</span>
+              <span class="project__tag">React</span>
+              <span class="project__tag">Ethers.js</span>
+              <span class="project__tag">OpenZeppelin</span>
+              <span class="project__tag">Sepolia</span>
+            </div>
+          </div>
+          <div class="project__foot">
+            <div class="project__links">
+              <a class="project__link" href="https://github.com/BrunoOde/blockchain" target="_blank" rel="noopener noreferrer">
+                <span data-i18n="link_repo">Ver repo</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Sistema YAGNI -->
+        <article class="project reveal" data-tag="github · YAGNI →">
+          <div class="project__head">
+            <div class="project__top">
+              <span class="project__index">P / 08</span>
+              <span class="project__badge" data-i18n="badge_academic">ACADÉMICO</span>
+            </div>
+            <h3 class="project__title">Sistema <em>YAGNI</em></h3>
+            <p class="project__desc" data-i18n="proj_yagni_desc">
+              Documentación arquitectónica completa de un sistema de gestión de comidas congeladas. El trabajo no era construir features: era tomar decisiones de diseño justificadas y sostenerlas. Arquitectura modular con API central (api-yagni), seis subsistemas desacoplados (Kitchen, Fridge, Logistic, Client, BackOffice, Payment Gateway), tres bases de datos con roles distintos (MongoDB, MySQL, Redis) y vistas formales en UML — descomposición, uso, C&amp;C y despliegue. Cada decisión documentada como ADR, con atributos de calidad como criterio, no como decoración.
+            </p>
+            <div class="project__tags">
+              <span class="project__tag">TypeScript</span>
+              <span class="project__tag">REST API</span>
+              <span class="project__tag">MongoDB</span>
+              <span class="project__tag">MySQL</span>
+              <span class="project__tag">Redis</span>
+              <span class="project__tag">UML2</span>
+              <span class="project__tag">ADRs</span>
+            </div>
+          </div>
+          <div class="project__foot">
+            <div class="project__links">
+              <a class="project__link" href="https://github.com/BrunoOde/ArquitecturaDeSoftware" target="_blank" rel="noopener noreferrer">
+                <span data-i18n="link_repo">Ver repo</span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
         <!-- 02 BuildingManagementAPI -->
         <article class="project reveal" data-tag="github · BMA →">
           <div class="project__head">
             <div class="project__top">
-              <span class="project__index">P / 04</span>
+              <span class="project__index">P / 09</span>
               <span class="project__badge" data-i18n="badge_academic">ACADÉMICO</span>
             </div>
             <h3 class="project__title">Building <em>Management</em> API</h3>
@@ -1332,7 +1517,7 @@
         <article class="project reveal" data-tag="github · STA →">
           <div class="project__head">
             <div class="project__top">
-              <span class="project__index">P / 05</span>
+              <span class="project__index">P / 10</span>
               <span class="project__badge" data-i18n="badge_systems">SISTEMAS</span>
             </div>
             <h3 class="project__title">Shared <em>Travel</em> App</h3>
@@ -1360,7 +1545,7 @@
         <article class="project reveal" data-tag="github · redes →">
           <div class="project__head">
             <div class="project__top">
-              <span class="project__index">P / 06</span>
+              <span class="project__index">P / 11</span>
               <span class="project__badge" data-i18n="badge_networking">REDES</span>
             </div>
             <h3 class="project__title">Modelo <em>híbrido</em> de redes</h3>
@@ -1387,7 +1572,7 @@
         <article class="project reveal" data-tag="github · EDA →">
           <div class="project__head">
             <div class="project__top">
-              <span class="project__index">P / 07</span>
+              <span class="project__index">P / 12</span>
               <span class="project__badge" data-i18n="badge_fundamentals">FUNDAMENTOS</span>
             </div>
             <h3 class="project__title"><em>Estructuras</em> y algoritmos</h3>
@@ -1414,7 +1599,7 @@
         <article class="project reveal" data-tag="github · IA →">
           <div class="project__head">
             <div class="project__top">
-              <span class="project__index">P / 08</span>
+              <span class="project__index">P / 13</span>
               <span class="project__badge">IA</span>
             </div>
             <h3 class="project__title">Inteligencia <em>artificial</em></h3>
@@ -1521,6 +1706,14 @@ document.documentElement.classList.add("js");
       proj_furbo_visual: "— Monte Carlo · 2026",
       tag_statmodeling: "Statistical modeling",
       link_visit_furbo: "Visit site",
+      badge_blockchain: "BLOCKCHAIN",
+      tag_microservices: "Microservices",
+      link_repo_general: "General repo",
+      proj_micro_desc: "Migration of a monolith to microservices with a real AWS deployment. The work wasn't just splitting services: it was backing every architectural decision with concrete, measurable NFRs. Six independent microservices (User, Account, Opportunity, Notification, Audit in .NET, plus an API Gateway), Clean Architecture in each, asynchronous communication via SNS/SQS, sidecar workers, a database per service, and an Angular frontend on S3. Deployed on ECS Fargate behind an ALB, centralized observability with New Relic and CloudWatch, K6 load tests validating p95 &lt; 300ms at 2400 req/min, CI with GitHub Actions, and explicit compliance with the 12-factor app. Real infrastructure, real costs, real decisions.",
+      proj_bigdata_desc: "Academic Big Data project. A complete ingestion, processing and analysis pipeline: data loaded with NiFi into HDFS, exploration and cleaning with PySpark in JupyterLabs, normalized modeling with unique primary keys, storage in Hive, and visualizations with GeoPandas, Bokeh and SuperSet. Four health datasets (depression, heart disease, mental health, and tobacco &amp; drugs in youth), five cross-cutting analytical questions, and an alternative proposal on a cloud-native Azure stack.",
+      proj_ml_desc: "Academic ML project with two problems. Problem 1: binary classification of movie reviews — feature engineering from scratch (20 derived variables), five classifiers (Logistic Regression, Decision Tree, Random Forest, Gradient Boosting, Neural Networks in three architectures), validation with Hold-Out, Repeated Hold-Out and stratified Cross-Validation. Final model: Gradient Boosting with an F1 of 0.75, validated in a Kaggle competition. Problem 2: NLP for film-genre prediction — text pipeline with NLTK, lemmatization, TF-IDF and GridSearchCV over ~8,700 combinations.",
+      proj_dao_desc: "Proof of concept for decentralized governance on the EVM. Smart contracts in Solidity with ERC-20 tokens, staking with rewards, on-chain voting weighted by stake, multisig and a panic mechanism. React frontend with Ethers.js, deployed and verified on the Sepolia testnet. 77 tests, 98.8% statement coverage, 100% of functions and lines.",
+      proj_yagni_desc: "Complete architectural documentation of a frozen-meals management system. The work wasn't building features: it was making justified design decisions and standing by them. Modular architecture with a central API (api-yagni), six decoupled subsystems (Kitchen, Fridge, Logistic, Client, BackOffice, Payment Gateway), three databases with distinct roles (MongoDB, MySQL, Redis) and formal UML views — decomposition, uses, C&amp;C and deployment. Every decision documented as an ADR, with quality attributes as the criterion, not decoration.",
       tag_freelance: "Freelance", tag_production: "Production",
       proj_bma_desc: "Building management system. REST API in .NET with an Angular frontend. Disciplined application of SOLID, GoF and GRASP patterns, UML2 modeling, and code-quality metrics as a design constraint — not decoration.",
       proj_sta_desc: "Ride-sharing application. The interesting part wasn't the domain: it was solving real concurrency, parallelism, and low-level network protocols. Sockets, synchronization, threads — distributed systems plumbing.",
